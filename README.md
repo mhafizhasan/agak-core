@@ -1,6 +1,6 @@
 # AGAK CORE
 
-A core package for AGAK Platform.
+A core package for AGAK Platform.  
 
 List of features:  
 1. Activity logger  
