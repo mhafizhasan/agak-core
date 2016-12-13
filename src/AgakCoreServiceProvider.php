@@ -13,7 +13,6 @@ class AgakCoreServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // publish on boot
         $this->publishes([
             __DIR__.'/../migrations/create_activity_log_table.php' => database_path('/migrations/create_activity_log_table.php')
         ],'migrations');
