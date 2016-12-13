@@ -1,0 +1,23 @@
+{
+    "name": "mhafizhasan/agak-core",
+    "description": "AGAK core package",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mhafizhasan",
+            "email": "mhafizhasan@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Mhafizhasan\\AgakCore\\": "src"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "illuminate/support": "~5",
+        "illuminate/database": "~5",
+        "illuminate/config": "~5"
+    }
+}
