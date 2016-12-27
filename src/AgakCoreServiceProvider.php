@@ -16,6 +16,10 @@ class AgakCoreServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../migrations/create_activity_log_table.php' => database_path('/migrations/'.date('Y_m_d_His').'_create_activity_log_table.php')
         ],'migrations');
+
+        $this->publishes([
+            __DIR__.'/../migrations/create_feeds_log_table.php' => database_path('/migrations/'.date('Y_m_d_His').'_create_feeds_log_table.php')
+        ],'migrations');
     }
 
     /**

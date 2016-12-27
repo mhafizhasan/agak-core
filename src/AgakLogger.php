@@ -9,7 +9,23 @@ use DB;
  */
 class AgakLogger
 {
-    public static function log($uid, $type, $description, $affected_uid, $scope, $mode) {
+    public static function activity($nric, $uid, $module, $action, $description, $url, $fuid) {
+
+        $id = DB::table('activity_log')
+            ->insertGetId([
+                'nric' => $nric,
+                'uid' => $uid,
+                'module' => $module,
+                'action' => $action,
+                'description' => $description,
+                'url' => $url,
+                'fuid' => $fuid
+            ]);
+
+        return $id;
+    }
+
+    public static function feed($uid, $module, $action, $title, $description, $scope, $icon, $url) {
 
         $sc = '';
         if(isset($scope) && is_array($scope)) {
@@ -19,14 +35,16 @@ class AgakLogger
             }
         }
 
-        $id = DB::table('activity_log')
+        $id = DB::table('feeds_log')
             ->insertGetId([
                 'uid' => $uid,
-                'type' => $type,
+                'module' => $module,
+                'action' => $action,
+                'title' => $title,
                 'description' => $description,
-                'affected_uid' => $affected_uid,
                 'scope' => $sc,
-                'mode' => $mode
+                'icon' => $icon,
+                'url' => $url
             ]);
 
         return $id;

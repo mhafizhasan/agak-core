@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateActivityLogTable extends Migration
+class CreateFeedsLogTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateActivityLogTable extends Migration
      */
     public function up()
     {
-        Schema::create('activity_log', function(Blueprint $table) {
+        Schema::create('feeds_log', function(Blueprint $table) {
             // $table->increments('id');
             // $table->string('uid',23);
             // $table->string('type', 255);
@@ -41,6 +41,6 @@ class CreateActivityLogTable extends Migration
      */
     public function down()
     {
-        Schema::drop('activity_log');
+        Schema::drop('feeds_log');
     }
 }
