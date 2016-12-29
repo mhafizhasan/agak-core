@@ -25,7 +25,7 @@ class AgakLogger
         return $id;
     }
 
-    public static function feed($uid, $module, $action, $title, $description, $scope, $icon, $url) {
+    public static function feed($uid, $module, $action, $title, $description, $scope, $icon, $url, $role) {
 
         $sc = '';
         if(isset($scope) && is_array($scope)) {
@@ -44,7 +44,8 @@ class AgakLogger
                 'description' => $description,
                 'scope' => $sc,
                 'icon' => $icon,
-                'url' => $url
+                'url' => $url,
+                'role' => $role
             ]);
 
         return $id;

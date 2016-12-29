@@ -27,6 +27,7 @@ class AgakSession extends BaseMiddleware
         if(!Session::get('uid')) {
             return redirect('/');
         }
+
         return $next($request);
     }
 }

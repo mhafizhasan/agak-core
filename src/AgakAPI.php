@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
 use DB;
-use AgakLogger;
+// use AgakLogger;
+
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 /**
  *
@@ -113,6 +116,55 @@ class AgakAPI
         return response()->json('200');
     }
 
+    ////////////////////////
+    // Regenerate Session //
+    ////////////////////////
+
+    public function generateSession($user)
+    {
+        // try {
+        //
+        //     if (! $user = JWTAuth::parseToken()->authenticate()) {
+        //         return \Response::make('User not found', 400);
+        //     }
+        //
+        // } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+        //     return \Response::make('Token expired', 400);
+        //
+        // } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+        //     return \Response::make('Token invalid', 400);
+        //
+        // } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+        //     return \Response::make('Token absent', 400);
+        // }
+
+        Session::put([
+            'uid' => $user->uid,
+            'nric' => $user->nric,
+            'name' => $user->name,
+            'email' => $user->email,
+            'roles' => $user->role,
+            'mobile' => $user->mobile,
+            'org_code' => $user->org_code
+        ]);
+        Session::save();
+
+        // return $user;
+    }
+
+    //////////////////////
+    // Regenerate Token //
+    //////////////////////
+
+    public function generateToken()
+    {
+        $user = User::where('uid', '=', Session::get('uid'))->first();
+        $token = JWTAuth::fromUser($user);
+
+        return $token;
+    }
+
+
     ///////////////////
     // Generate Slug //
     ///////////////////
@@ -124,6 +176,7 @@ class AgakAPI
 
         return $val;
     }
+
 
     ///////////////////////
     // Organisation Tree //
@@ -163,7 +216,7 @@ class AgakAPI
             $nodeId = Session::get('org_code');
         }
 
-        $pNode = $this->parentNode($nodeId);
+        $pNode = $this->parentNode($nodeId, false);
         $cNode = $this->childNode($nodeId);
 
         $array_all = array_merge($pNode, $cNode);
@@ -172,18 +225,26 @@ class AgakAPI
         // return response()->json($array_all);
     }
 
-    public static function parentNode($nodeId = "") {
+    public static function parentNode($nodeId = "", $include) {
 
         if($nodeId == "") {
             $nodeId = Session::get('org_code');
         }
 
-        $master_tree_upper = DB::select('SELECT parent.code, parent.description
-                                        FROM master_tree AS node, master_tree AS parent
-                                        WHERE node.lft BETWEEN parent.lft AND parent.rgt
-                                        AND node.code = :nodeId AND parent.id > 1
-                                        AND parent.code <> :nodeId2
-                                        ORDER BY parent.lft', ['nodeId' => $nodeId, 'nodeId2' => $nodeId]);
+        if($include) {
+            $master_tree_upper = DB::select('SELECT parent.code, parent.description
+                                            FROM master_tree AS node, master_tree AS parent
+                                            WHERE node.lft BETWEEN parent.lft AND parent.rgt
+                                            AND node.code = :nodeId AND parent.id > 1
+                                            ORDER BY parent.lft', ['nodeId' => $nodeId]);
+        } else {
+            $master_tree_upper = DB::select('SELECT parent.code, parent.description
+                                            FROM master_tree AS node, master_tree AS parent
+                                            WHERE node.lft BETWEEN parent.lft AND parent.rgt
+                                            AND node.code = :nodeId AND parent.id > 1
+                                            AND parent.code <> :nodeId2
+                                            ORDER BY parent.lft', ['nodeId' => $nodeId, 'nodeId2' => $nodeId]);
+        }
 
         return $master_tree_upper;
     }
