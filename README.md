@@ -3,10 +3,15 @@
 A core package for AGAK Platform.  
 
 List of features:  
-1. AgakLogger - log activity for dashboard newsfeed  
+
+API  
+1. AgakLogger - log activity for dashboard newsfeed and audit trail  
 2. AgakAPI - core function  
-3. AgakJWT - manage JWT token  
-4. AgakSession - manage session  
+
+Middleware  
+1. AgakJWT - manage JWT token  
+2. AgakSession - manage session  
+3. AgakGateKeeper - check user authorized url  
 
 ## Installation
 
