@@ -34,7 +34,8 @@ class AgakGateKeeper extends BaseMiddleware
 
         $user = User::where('uid', '=', Session::get('uid'))->first();
 
-        $url = \Request::path();
+        // $url = \Request::path();
+        $url = \Request::segment(1);
 
         $permitted_path = array(
             "dashboard",
